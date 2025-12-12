@@ -106,26 +106,40 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public boolean isInside(Pixel2D p) {
-        boolean ans = true;
-
-        return ans;
+        try{
+            int i = _mapArray[p.getX()][p.getY()];
+            return true;
+        }catch (IndexOutOfBoundsException e){
+            return false;
+        }
     }
 
     @Override
     public boolean sameDimensions(Map2D p) {
-        boolean ans = false;
-
-        return ans;
+        return _w == p.getWidth() && _h == p.getHeight();
     }
 
     @Override
     public void addMap2D(Map2D p) {
-
+        if (sameDimensions(p)){
+//            add all scales in p with this
+//            for example i have a 4X4 with values of 1 and a 4x4 values 2
+//            it sets the _mapArray to a 4x4 value of 3
+            for (int i=0; i<_mapArray.length; i++){
+                for (int j=0; j<_mapArray[i].length; j++){
+                    _mapArray[i][j] = getPixel(i, j);
+                }
+            }
+        }
     }
 
     @Override
     public void mul(double scalar) {
-
+        for (int i=0; i<_mapArray.length; i++){
+            for (int j=0; j<_mapArray[i].length; j++){
+                _mapArray[i][j] = (int) (_mapArray[i][j] * scalar);
+            }
+        }
     }
 
     @Override
