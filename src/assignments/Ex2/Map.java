@@ -1,5 +1,6 @@
 package assignments.Ex2;
 import java.io.Serializable;
+
 /**
  * This class represents a 2D map (int[w][h]) as a "screen" or a raster matrix or maze over integers.
  * This is the main class needed to be implemented.
@@ -8,20 +9,33 @@ import java.io.Serializable;
  *
  */
 public class Map implements Map2D, Serializable{
+    private int _w;
+    private int _h;
+    private int _v;
 
-    // edit this class below
+    private int [][] _mapArray;
+
+    private static final int DEFAULT_VALUE = 0;
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
 	 * @param w
 	 * @param h
-	 * @param v
+	 * @param v the init value of all the entries in the 2D array.
 	 */
-	public Map(int w, int h, int v) {init(w, h, v);}
+	public Map(int w, int h, int v) {
+        init(w, h, v);
+    }
 	/**
 	 * Constructs a square map (size*size).
 	 * @param size
 	 */
-	public Map(int size) {this(size,size, 0);}
+	public Map(int size) {
+        this(size,size, 0);
+    }
+
+    public Map(){
+        init(10,10,DEFAULT_VALUE);
+    }
 	
 	/**
 	 * Constructs a map from a given 2D array.
@@ -32,49 +46,62 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override
 	public void init(int w, int h, int v) {
-
+        _w = w;
+        _h = h;
+        _v = v;
 	}
 	@Override
 	public void init(int[][] arr) {
+        if (arr == null){
+            throw new NullPointerException("Array is null");
+        }
+        try {
+            _w = arr.length;
+            _h = arr[0].length;
+            _v = DEFAULT_VALUE;
+        } catch (Exception e) {
+            //this = new Map(arr.length, arr[0].length, DEFAULT_VALUE);
+            System.out.println("Error in init");
+        }
+
 
 	}
 	@Override
 	public int[][] getMap() {
-		int[][] ans = null;
+        int[][] copy = new int[_mapArray.length][];
 
-		return ans;
+        for (int i = 0; i < _mapArray.length; i++) {
+            copy[i] = new int[_mapArray[i].length];
+
+            for (int j = 0; j < _mapArray[i].length; j++) {
+                copy[i][j] = _mapArray[i][j];
+            }
+        }
+        return copy;
 	}
 	@Override
 	public int getWidth() {
-        int ans = -1;
-
-        return ans;
+        return _w;
     }
 	@Override
 	public int getHeight() {
-        int ans = -1;
-
-        return ans;
+        return _h;
     }
 	@Override
 	public int getPixel(int x, int y) {
-        int ans = -1;
-
-        return ans;
+        return _mapArray[x][y];
     }
 	@Override
 	public int getPixel(Pixel2D p) {
-        int ans = -1;
-
-        return ans;
+        return _mapArray[p.getX()][p.getY()];
 	}
 	@Override
 	public void setPixel(int x, int y, int v) {
-
+        _mapArray[x][y] = v;
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
-
+        _mapArray[p.getX()][p.getX()] = v;
 	}
 
     @Override
@@ -155,5 +182,4 @@ public class Map implements Map2D, Serializable{
         return ans;
     }
 	////////////////////// Private Methods ///////////////////////
-
 }
