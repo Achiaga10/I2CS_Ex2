@@ -34,7 +34,7 @@ public class Map implements Map2D, Serializable{
     }
 
     public Map(){
-        init(10,10,DEFAULT_VALUE);
+        init(100,100,DEFAULT_VALUE);
     }
 	
 	/**
@@ -49,6 +49,12 @@ public class Map implements Map2D, Serializable{
         _w = w;
         _h = h;
         _v = v;
+        _mapArray = new int[w][h];
+        for(int i = 0; i < w; i++){
+            for(int j = 0; j < h; j++){
+                _mapArray[i][j] = v;
+            }
+        }
 	}
 	@Override
 	public void init(int[][] arr) {
@@ -59,6 +65,13 @@ public class Map implements Map2D, Serializable{
             _w = arr.length;
             _h = arr[0].length;
             _v = DEFAULT_VALUE;
+
+            _mapArray = new int[_w][_h];
+            for(int i = 0; i < _w; i++){
+                for(int j = 0; j < _h; j++){
+                    _mapArray[i][j] = arr[i][j];
+                }
+            }
         } catch (Exception e) {
             //this = new Map(arr.length, arr[0].length, DEFAULT_VALUE);
             System.out.println("Error in init");
@@ -149,7 +162,13 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawCircle(Pixel2D center, double rad, int color) {
-
+        for  (int i=0; i<_mapArray.length; i++){
+            for (int j=0; j<_mapArray[i].length; j++){
+                if (Math.hypot(center.getX() - i, center.getY() - j) <= rad){
+                    _mapArray[i][j] = color;
+                }
+            }
+        }
     }
 
     @Override
