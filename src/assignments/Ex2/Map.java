@@ -164,7 +164,7 @@ public class Map implements Map2D, Serializable{
     public void drawCircle(Pixel2D center, double rad, int color) {
         for  (int i=0; i<_mapArray.length; i++){
             for (int j=0; j<_mapArray[i].length; j++){
-                if (Math.hypot(center.getX() - i, center.getY() - j) <= rad){
+                if (Math.hypot(center.getX() - j, center.getY() - i) <= rad){
                     _mapArray[i][j] = color;
                 }
             }
@@ -178,14 +178,31 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawRect(Pixel2D p1, Pixel2D p2, int color) {
-
+        for  (int i=0; i<_mapArray.length; i++){
+            for (int j=0; j<_mapArray[i].length; j++){
+                if (j >= p1.getX() && j <= p2.getX() && i >= p1.getY() && i <= p2.getY()){
+                    _mapArray[i][j] = color;
+                }
+            }
+        }
     }
 
     @Override
     public boolean equals(Object ob) {
-        boolean ans = false;
+        if (this == ob) {return true;}
+        if (!(ob instanceof Map)) {return false;}
 
-        return ans;
+        Map m = (Map)ob;
+        int [][] mArray = m.getMap();
+
+        for (int i=0; i<_mapArray.length; i++){
+            for (int j=0; j<_mapArray[i].length; j++){
+                if (_mapArray[i][j] != mArray[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 	@Override
 	/** 
