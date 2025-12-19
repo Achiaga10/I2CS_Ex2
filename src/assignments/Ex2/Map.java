@@ -17,6 +17,7 @@ public class Map implements Map2D, Serializable{
     private int [][] _mapArray;
 
     private static final int DEFAULT_VALUE = 0;
+    private static final int BLOCK_VALUE = 0;
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
 	 * @param w
@@ -223,14 +224,46 @@ public class Map implements Map2D, Serializable{
         }
         return true;
     }
-	@Override
+
+    @Override
 	/** 
 	 * Fills this map with the new color (new_v) starting from p.
 	 * https://en.wikipedia.org/wiki/Flood_fill
 	 */
 	public int fill(Pixel2D xy, int new_v,  boolean cyclic) {
-		int ans = -1;
+		int ans = 1;
+        int x = xy.getX();
+        int y = xy.getY();
+        int cur_v = _mapArray[y][x];
+        if (new_v != BLOCK_VALUE){
+            setPixel(xy, new_v);
+        }
+        boolean [][] visited = new boolean[getWidth()][getHeight()];
+        for (boolean [] row: visited){
+            Arrays.fill(row, false);
+        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(x, y,null));
+        visited[y][y] = true;
 
+        int [][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        while (!q.isEmpty()) {
+            Node curr = q.poll();
+
+            for (int [] dir: dirs){
+                int new_x = curr.x + dir[0];
+                int new_y = curr.y + dir[1];
+
+                if(new_x >= 0 && new_y >= 0 && new_y < getWidth() && new_x < getHeight() &&
+                        !visited[new_x][new_y] && _mapArray[new_x][new_y] == cur_v &&
+                        _mapArray[new_x][new_y] != BLOCK_VALUE){
+                    _mapArray[new_x][new_y] = new_v;
+                    visited[new_x][new_y] = true;
+                    ans++;
+                    q.add(new Node(new_x, new_y,null));
+                }
+            }
+        }
 		return ans;
 	}
 
