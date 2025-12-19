@@ -36,7 +36,7 @@ public class Index2D implements Pixel2D {
 
     @Override
     public String toString() {
-        String ans = "x: " + this._x + ", y: " + this._y;
+        String ans = "Pixel: (" + this._x + ", " + this._y + ")";
         return ans;
     }
 

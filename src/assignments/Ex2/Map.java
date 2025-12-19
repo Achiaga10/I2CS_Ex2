@@ -1,5 +1,6 @@
 package assignments.Ex2;
 import java.io.Serializable;
+import java.util.*;
 
 /**
  * This class represents a 2D map (int[w][h]) as a "screen" or a raster matrix or maze over integers.
@@ -114,7 +115,7 @@ public class Map implements Map2D, Serializable{
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
-        _mapArray[p.getX()][p.getX()] = v;
+        _mapArray[p.getX()][p.getY()] = v;
 	}
 
     @Override
@@ -162,9 +163,18 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawCircle(Pixel2D center, double rad, int color) {
-        for  (int i=0; i<_mapArray.length; i++){
-            for (int j=0; j<_mapArray[i].length; j++){
-                if (Math.hypot(center.getX() - j, center.getY() - i) <= rad){
+        //Define the Bounding Box
+        int minX = (int) Math.max(0, Math.floor(center.getX() - rad));
+        int maxX = (int) Math.min(_mapArray[0].length - 1, Math.ceil(center.getX() + rad));
+        int minY = (int) Math.max(0, Math.floor(center.getY() - rad));
+        int maxY = (int) Math.min(_mapArray.length - 1, Math.ceil(center.getY() + rad));
+
+        for (int i = minY; i <= maxY; i++) {
+            for (int j = minX; j <= maxX; j++) {
+                double dx = center.getX() - (j + 0.5);
+                double dy = center.getY() - (i + 0.5);
+                // 3. Distance Check
+                if ((dx * dx + dy * dy) <= (rad * rad)) {
                     _mapArray[i][j] = color;
                 }
             }
@@ -173,7 +183,16 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
-
+        int m;
+        if ((p2.getX()-p1.getX()) == 0){m=0;}
+        else {
+            m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+        }
+        int b = p1.getY() - (m * p1.getX());
+        for (int x = p1.getX(); x <= p2.getY(); x++) {
+            int y = m*x + b;
+            this._mapArray[y][x] = color;
+        }
     }
 
     @Override
@@ -223,8 +242,36 @@ public class Map implements Map2D, Serializable{
 	public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
 		Pixel2D[] ans = null;  // the result.
 
+        boolean [][] visited = new boolean[getWidth()][getHeight()];
+        for (boolean [] row: visited){
+            Arrays.fill(row, false);
+        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(p1.getX(), p1.getY(),null));
+        visited[p1.getX()][p1.getY()] = true;
+
+        int [][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        while (!q.isEmpty()) {
+            Node curr = q.poll();
+
+            if(curr.x ==  p2.getX() && curr.y == p2.getY()){
+                return createPath(curr);
+            }
+
+            for(int[] d: dirs){
+                int nx = curr.x + d[0];
+                int ny = curr.y + d[1];
+
+                if (nx >= 0 && ny >= 0 && ny < getWidth() && nx < getHeight() && !visited[nx][ny] &&
+                        _mapArray[nx][ny] != obsColor) {
+                    visited[nx][ny] = true;
+                    q.add(new Node(nx,ny,curr));
+                }
+            }
+        }
 		return ans;
 	}
+
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
         Map2D ans = null;  // the result.
@@ -232,4 +279,25 @@ public class Map implements Map2D, Serializable{
         return ans;
     }
 	////////////////////// Private Methods ///////////////////////
+
+    static class Node{
+        int x, y;
+        Node parent;
+        Node(int x, int y, Node parent){
+            this.x = x;
+            this.y = y;
+            this.parent = parent;
+        }
+    }
+
+    private static Pixel2D[] createPath(Node node){
+        ArrayList<Pixel2D> ans = new ArrayList<>();
+        while(node != null){
+            ans.add(new Index2D(node.x, node.y));
+            node = node.parent;
+        }
+        Collections.reverse(ans);
+
+        return ans.toArray(new Pixel2D[0]);
+    }
 }
