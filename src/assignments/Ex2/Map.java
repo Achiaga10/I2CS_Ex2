@@ -17,7 +17,7 @@ public class Map implements Map2D, Serializable{
     private int [][] _mapArray;
 
     private static final int DEFAULT_VALUE = 0;
-    private static final int BLOCK_VALUE = 0;
+    private static final int BLOCK_VALUE = -1;
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
 	 * @param w
@@ -38,8 +38,8 @@ public class Map implements Map2D, Serializable{
     public Map(){
         init(100,100,DEFAULT_VALUE);
     }
-	
-	/**
+
+    /**
 	 * Constructs a map from a given 2D array.
 	 * @param data
 	 */
@@ -51,10 +51,10 @@ public class Map implements Map2D, Serializable{
         _w = w;
         _h = h;
         _v = v;
-        _mapArray = new int[w][h];
-        for(int i = 0; i < w; i++){
-            for(int j = 0; j < h; j++){
-                _mapArray[i][j] = v;
+        _mapArray = new int[h][w];
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w; j++){
+                _mapArray[j][i] = v;
             }
         }
 	}
@@ -64,13 +64,13 @@ public class Map implements Map2D, Serializable{
             throw new NullPointerException("Array is null");
         }
         try {
-            _w = arr.length;
-            _h = arr[0].length;
+            _w = arr[0].length;
+            _h = arr.length;
             _v = DEFAULT_VALUE;
 
-            _mapArray = new int[_w][_h];
-            for(int i = 0; i < _w; i++){
-                for(int j = 0; j < _h; j++){
+            _mapArray = new int[_h][_w];
+            for(int i = 0; i < _h; i++){
+                for(int j = 0; j < _w; j++){
                     _mapArray[i][j] = arr[i][j];
                 }
             }
@@ -122,7 +122,7 @@ public class Map implements Map2D, Serializable{
     @Override
     public boolean isInside(Pixel2D p) {
         try{
-            int i = _mapArray[p.getX()][p.getY()];
+            int _ = _mapArray[p.getY()][p.getX()];
             return true;
         }catch (IndexOutOfBoundsException e){
             return false;
@@ -142,7 +142,7 @@ public class Map implements Map2D, Serializable{
 //            it sets the _mapArray to a 4x4 value of 3
             for (int i=0; i<_mapArray.length; i++){
                 for (int j=0; j<_mapArray[i].length; j++){
-                    _mapArray[i][j] = getPixel(i, j);
+                    _mapArray[i][j] = p.getPixel(i, j);
                 }
             }
         }
@@ -226,7 +226,7 @@ public class Map implements Map2D, Serializable{
     }
 
     @Override
-	/** 
+	/**
 	 * Fills this map with the new color (new_v) starting from p.
 	 * https://en.wikipedia.org/wiki/Flood_fill
 	 */
