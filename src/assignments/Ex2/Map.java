@@ -159,9 +159,26 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void rescale(double sx, double sy) {
+        int newWidth = (int) (getWidth() * sx);
+        int newHeight = (int) (getHeight() * sy);
 
+        int[][] newMap = new int[newWidth][newHeight];
+
+        for (int x = 0; x < newWidth; x++) {
+            for (int y = 0; y < newHeight; y++) {
+                int oldX = (int) (x / sx);
+                int oldY = (int) (y / sy);
+
+                if (oldX >= getWidth()) oldX = getWidth() - 1;
+                if (oldY >= getHeight()) oldY = getHeight() - 1;
+
+                newMap[x][y] = _mapArray[oldX][oldY];
+            }
+        }
+        _w = newWidth;
+        _h = newHeight;
+        _mapArray = newMap;
     }
-
     @Override
     public void drawCircle(Pixel2D center, double rad, int color) {
         //Define the Bounding Box
@@ -184,16 +201,25 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
-        int m;
-        if ((p2.getX()-p1.getX()) == 0){m=0;}
+        if ((p2.getX()-p1.getX()) == 0){
+            int maxY = Math.max(p1.getY(), p2.getY());
+            int minY = Math.min(p1.getY(), p2.getY());
+            for (int i=minY; i<=maxY; i++){
+                this._mapArray[i][p1.getY()] = color;
+            }
+        }
         else {
-            m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            int m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            int b = p1.getY() - (m * p1.getX());
+            int maxX = Math.max(p1.getX(), p2.getX());
+            int minX = Math.min(p1.getX(), p2.getX());
+
+            for (int x = minX; x <= maxX; x++) {
+                int y = m*x + b;
+                this._mapArray[y][x] = color;
+            }
         }
-        int b = p1.getY() - (m * p1.getX());
-        for (int x = p1.getX(); x <= p2.getY(); x++) {
-            int y = m*x + b;
-            this._mapArray[y][x] = color;
-        }
+
     }
 
     @Override
@@ -333,4 +359,6 @@ public class Map implements Map2D, Serializable{
 
         return ans.toArray(new Pixel2D[0]);
     }
+
+
 }
