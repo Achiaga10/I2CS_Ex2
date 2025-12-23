@@ -112,37 +112,82 @@ class MapTest {
 
     @Test
     void testMul() {
-        assertTrue(false);
-
+        m.mul(0);
+        assertArrayEquals(m.getMap(), _map_3_4, "The 2D arrays are equal");
+        assertNotEquals(m.getMap(), _map_3_3, "The 2D arrays are NOT equal");
     }
 
     @Test
     void testRescale() {
-        assertTrue(false);
+        Map2D rescaled = new Map(new int[][]{{1,1},{0,0}});
+        Map2D result = new Map(new int[][]{{1,1,1,1},{1,1,1,1},{0,0,0,0},{0,0,0,0}});
+        rescaled.rescale(2.0,2.0);
+        assertTrue(rescaled.equals(result));
 
     }
 
     @Test
     void testDrawCircle() {
-        assertTrue(false);
+        Pixel2D p1 = new Index2D(20,20);
+        int rad = 3;
+        int color = 2;
+        boolean ans = true;
+        _m0.drawCircle(p1, rad, color);
+        for (int i = 0; i < _m0.getMap().length; i++) {
+            for (int j = 0; j < _m0.getMap()[0].length; j++) {
+                double dx = p1.getX() - (j + 0.5);
+                double dy = p1.getY() - (i + 0.5);
+                if ((dx * dx + dy * dy) <= (rad * rad) && _m0.getMap()[i][j] != color) {
+                    ans = false;
+                }
+            }
+        }
+        assertTrue(ans);
 
     }
 
     @Test
     void testDrawLine() {
-        assertTrue(false);
-
+        Map2D line = new Map(10);
+        line.drawLine(new Index2D(2,2),new Index2D(9,9), 4);
+        int [][] result = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,4,0,0,0,0,0,0,0},
+                {0,0,0,4,0,0,0,0,0,0},
+                {0,0,0,0,4,0,0,0,0,0},
+                {0,0,0,0,0,4,0,0,0,0},
+                {0,0,0,0,0,0,4,0,0,0},
+                {0,0,0,0,0,0,0,4,0,0},
+                {0,0,0,0,0,0,0,0,4,0},
+                {0,0,0,0,0,0,0,0,0,4},
+        };
+        assertArrayEquals(line.getMap(),result, "The 2D arrays are equal");
     }
 
     @Test
     void testDrawRect() {
-        assertTrue(false);
-
+        Map2D line = new Map(10);
+        line.drawRect(new Index2D(2,2),new Index2D(9,9), 4);
+        int [][] result = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+                {0,0,4,4,4,4,4,4,4,4},
+        };
+        assertArrayEquals(line.getMap(),result, "The 2D arrays are equal");
     }
 
     @Test
     void testEquals1() {
-        assertTrue(false);
+        assertTrue(_m0.equals(_m1));
+        assertFalse(_m0.equals(_m3_3));
 
     }
 
