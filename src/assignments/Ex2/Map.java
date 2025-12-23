@@ -280,6 +280,18 @@ public class Map implements Map2D, Serializable{
                 int new_x = curr.x + dir[0];
                 int new_y = curr.y + dir[1];
 
+                if (cyclic) {
+                    if (new_x < 0 || new_x >= getWidth()) {
+                        new_x = Math.floorMod(new_x,getWidth());
+
+                    }
+                    if (new_y < 0 || new_y >= getHeight()) {
+                        new_y = Math.floorMod(new_y,getWidth());
+
+                    }
+
+                }
+
                 if(new_x >= 0 && new_y >= 0 && new_y < getWidth() && new_x < getHeight() &&
                         !visited[new_x][new_y] && _mapArray[new_x][new_y] == cur_v &&
                         _mapArray[new_x][new_y] != BLOCK_VALUE){
@@ -320,7 +332,17 @@ public class Map implements Map2D, Serializable{
             for(int[] d: dirs){
                 int nx = curr.x + d[0];
                 int ny = curr.y + d[1];
+                if (cyclic) {
+                    if (nx < 0 || nx >= getWidth()) {
+                        nx = Math.floorMod(nx,getWidth());
 
+                    }
+                    if (ny < 0 || ny >= getHeight()) {
+                        ny = Math.floorMod(ny,getWidth());
+
+                    }
+
+                }
                 if (nx >= 0 && ny >= 0 && ny < getWidth() && nx < getHeight() && !visited[nx][ny] &&
                         _mapArray[nx][ny] != obsColor) {
                     visited[nx][ny] = true;
@@ -333,26 +355,68 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
-        Map2D ans = null;  // the result.
+        Map2D ans = null;// the result.
+        int [][] mArr = getMap();
+        boolean [][] visited = new boolean[getWidth()][getHeight()];
+        for (boolean [] row: visited){
+            Arrays.fill(row, false);
+        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(start.getX(), start.getY(),null));
+        visited[start.getY()][start.getX()] = true;
 
-        return ans;
+        int [][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        while (!q.isEmpty()) {
+            Node curr = q.poll();
+            if(curr.pos == 0){
+                mArr[curr.y][curr.x] = _mapArray[curr.y][curr.x];
+            }
+            else{
+                mArr[curr.y][curr.x] = curr.pos;
+            }
+
+            for(int[] d: dirs){
+                int nx = curr.x + d[0];
+                int ny = curr.y + d[1];
+                if (cyclic) {
+                    if (nx < 0 || nx >= getWidth()) {
+                        nx = Math.floorMod(nx,getWidth());
+
+                    }
+                    if (ny < 0 || ny >= getHeight()) {
+                        ny = Math.floorMod(ny,getWidth());
+
+                    }
+
+                }
+                if (nx >= 0 && ny >= 0 && nx < getWidth() && ny < getHeight() && !visited[ny][nx] &&
+                        _mapArray[ny][nx] != obsColor) {
+                    visited[ny][nx] = true;
+                    q.add(new Node(nx,ny,curr));
+
+                }
+            }
+        }
+        return new Map(mArr);
     }
 	////////////////////// Private Methods ///////////////////////
 
     static class Node{
-        int x, y;
+        int x, y, pos;
         Node parent;
         Node(int x, int y, Node parent){
             this.x = x;
             this.y = y;
             this.parent = parent;
+            if (parent == null){this.pos = 0;}
+            else {this.pos = parent.pos + 1;}
         }
     }
 
     private static Pixel2D[] createPath(Node node){
         ArrayList<Pixel2D> ans = new ArrayList<>();
         while(node != null){
-            ans.add(new Index2D(node.x, node.y));
+            ans.add(new Index2D(node.y, node.x));
             node = node.parent;
         }
         Collections.reverse(ans);
