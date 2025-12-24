@@ -193,19 +193,119 @@ class MapTest {
 
     @Test
     void testFill() {
-        assertTrue(false);
+        Map2D fillM = new Map(10);
+        fillM.drawRect(new Index2D(2,2),new Index2D(9,9), 3);
+        fillM.drawLine(new Index2D(0,2),new Index2D(0,9), 3);
+        int [][] resultTrue = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+                {4,0,4,4,4,4,4,4,4,4},
+        };
+        int [][] resultFalse = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+                {3,0,4,4,4,4,4,4,4,4},
+        };
+        fillM.fill(new Index2D(5,5), 4, false);
+        assertArrayEquals(fillM.getMap(),resultFalse, "The 2D arrays are equal");
+        fillM.fill(new Index2D(5,5), 3, false);
+        fillM.fill(new Index2D(5,5), 4, true);
+        assertArrayEquals(fillM.getMap(),resultTrue, "The 2D arrays are equal");
 
     }
 
     @Test
     void testShortestPath() {
-        assertTrue(false);
+        int [][] template = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,-1,0,0,0,0,-1,0,0,0},
+                {0,-1,0,0,0,0,-1,0,0,0},
+                {0,-1,0,0,0,0,0,0,0,0},
+                {0,-1,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,-1,-1,-1,-1,0,0,0},
+                {0,0,0,-1,0,0,-1,0,0,0},
+                {0,0,0,-1,-1,0,-1,0,0,0},
+                {0,0,0,0,0,0,-1,0,0,0},
+        };
+
+        Pixel2D [] resultTrue = new Pixel2D[]{new Index2D(7,4), new Index2D(7,5), new Index2D(8,5), new Index2D(9,5), new Index2D(0,5), new Index2D(1,5), new Index2D(2,5), };
+        Pixel2D [] resultFalse = new Pixel2D[]{new Index2D(2,5), new Index2D(2,4), new Index2D(2,3), new Index2D(2,2), new Index2D(3,2), new Index2D(4,2), new Index2D(5,2), new Index2D(6,2), new Index2D(7,2), new Index2D(8,2), new Index2D(9,2), new Index2D(9,3), new Index2D(9,4), new Index2D(9,5), new Index2D(8,5), new Index2D(7,5), new Index2D(7,4), };
+
+        Map2D map1 = new Map(template);
+        Pixel2D [] px1 = map1.shortestPath(new Index2D(4,7),new Index2D(5,2),-1, true);
+
+        assertArrayEquals(resultTrue,px1, "The 2D arrays are equal");
+
+        Map2D map2 = new Map(template);
+        Pixel2D [] px2 = map2.shortestPath(new Index2D(5,2),new Index2D(4,7),-1, false);
+
+        assertArrayEquals(resultFalse,px2, "The 2D arrays are equal");
 
     }
 
     @Test
     void testAllDistance() {
-        assertTrue(false);
+        int [][] template = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,-1,0,0,0,0,-1,0,0,0},
+                {0,-1,0,0,0,0,-1,0,0,0},
+                {0,-1,0,0,0,0,0,0,0,0},
+                {0,-1,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,-1,-1,-1,-1,0,0,0},
+                {0,0,0,-1,0,0,-1,0,0,0},
+                {0,0,0,-1,-1,0,-1,0,0,0},
+                {0,0,0,0,0,0,-1,0,0,0},
+        };
+        int [][] resultTrue = new int[][]{
+                {7, 6, 5, 4, 3, 2, 3, 4, 5, 6,},
+                {8, -1, 4, 3, 2, 1, -1, 5, 6, 7,},
+                {7, -1, 3, 2, 1, 0, -1, 4, 5, 6,},
+                {6, -1, 4, 3, 2, 1, 2, 3, 4, 5,},
+                {7, -1, 5, 4, 3, 2, 3, 4, 5, 6,},
+                {8, 7, 6, 5, 4, 3, 4, 5, 6, 7,},
+                {9, 8, 7, -1, -1, -1, -1, 6, 7, 8,},
+                {10, 9, 8, -1, 6, 5, -1, 7, 8, 9,},
+                {9, 8, 7, -1, -1, 4, -1, 6, 7, 8,},
+                {8, 7, 6, 5, 4, 3, -1, 5, 6, 7,},
+        };
+        int [][] resultFalse = new int[][]{
+                {7, 6, 5, 4, 3, 2, 3, 4, 5, 6, },
+                {8, -1, 4, 3, 2, 1, -1, 5, 6, 7, },
+                {9, -1, 3, 2, 1, 0, -1, 4, 5, 6, },
+                {10, -1, 4, 3, 2, 1, 2, 3, 4, 5, },
+                {9, -1, 5, 4, 3, 2, 3, 4, 5, 6, },
+                {8, 7, 6, 5, 4, 3, 4, 5, 6, 7, },
+                {9, 8, 7, -1, -1, -1, -1, 6, 7, 8, },
+                {10, 9, 8, -1, 16, 15, -1, 7, 8, 9, },
+                {11, 10, 9, -1, -1, 14, -1, 8, 9, 10, },
+                {12, 11, 10, 11, 12, 13, -1, 9, 10, 11, },
+        };
+        Map2D map1 = new Map(template);
+        Map2D newM1 = map1.allDistance(new Index2D(5,2),-1,true);
+
+        assertArrayEquals(newM1.getMap(),resultTrue, "The 2D arrays are equal");
+
+        Map2D map2 = new Map(template);
+        Map2D newM2 = map2.allDistance(new Index2D(5,2),-1,false);
+
+        assertArrayEquals(newM2.getMap(),resultFalse, "The 2D arrays are equal");
+
 
     }
 }

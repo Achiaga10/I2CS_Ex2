@@ -205,18 +205,20 @@ public class Map implements Map2D, Serializable{
             int maxY = Math.max(p1.getY(), p2.getY());
             int minY = Math.min(p1.getY(), p2.getY());
             for (int i=minY; i<=maxY; i++){
-                this._mapArray[i][p1.getY()] = color;
+                this._mapArray[i][p1.getX()] = color;
             }
         }
         else {
-            int m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-            int b = p1.getY() - (m * p1.getX());
+            double dy = p2.getY() - p1.getY();
+            double dx = p2.getX() - p1.getX();
+            double m = dy / dx;
+            double b = p1.getY() - (m * p1.getX());
             int maxX = Math.max(p1.getX(), p2.getX());
             int minX = Math.min(p1.getX(), p2.getX());
 
             for (int x = minX; x <= maxX; x++) {
-                int y = m*x + b;
-                this._mapArray[y][x] = color;
+                double y = m*x + b;
+                this._mapArray[(int)y][x] = color;
             }
         }
 
@@ -319,7 +321,7 @@ public class Map implements Map2D, Serializable{
         }
         Queue<Node> q = new LinkedList<>();
         q.add(new Node(p1.getX(), p1.getY(),null));
-        visited[p1.getX()][p1.getY()] = true;
+        visited[p1.getY()][p1.getX()] = true;
 
         int [][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
         while (!q.isEmpty()) {
@@ -343,9 +345,9 @@ public class Map implements Map2D, Serializable{
                     }
 
                 }
-                if (nx >= 0 && ny >= 0 && ny < getWidth() && nx < getHeight() && !visited[nx][ny] &&
-                        _mapArray[nx][ny] != obsColor) {
-                    visited[nx][ny] = true;
+                if (nx >= 0 && ny >= 0 && ny < getWidth() && nx < getHeight() && !visited[ny][nx] &&
+                        _mapArray[ny][nx] != obsColor) {
+                    visited[ny][nx] = true;
                     q.add(new Node(nx,ny,curr));
                 }
             }
