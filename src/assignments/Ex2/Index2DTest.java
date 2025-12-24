@@ -25,7 +25,7 @@ public class Index2DTest {
     }
     @Test
     public void toStringTest(){
-        assertEquals(index1.toString(),"x: "+index1.getX()+", y: "+index1.getY());
+        assertEquals(index1.toString(),"Pixel: ("+index1.getX()+", "+index1.getY()+ ")");
     }
     @Test
     public void equalsTest(){
