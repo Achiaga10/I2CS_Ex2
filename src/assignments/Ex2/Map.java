@@ -19,7 +19,7 @@ public class Map implements Map2D, Serializable{
     private int [][] _mapArray;
 
     private static final int DEFAULT_VALUE = 0;
-    private static final int BLOCK_VALUE = -1;
+    public static final int BLOCK_VALUE = -1;
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
 	 * @param w
@@ -106,19 +106,19 @@ public class Map implements Map2D, Serializable{
     }
 	@Override
 	public int getPixel(int x, int y) {
-        return _mapArray[x][y];
+        return _mapArray[y][x];
     }
 	@Override
 	public int getPixel(Pixel2D p) {
-        return _mapArray[p.getX()][p.getY()];
+        return _mapArray[p.getY()][p.getX()];
 	}
 	@Override
 	public void setPixel(int x, int y, int v) {
-        _mapArray[x][y] = v;
+        _mapArray[y][x] = v;
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
-        _mapArray[p.getX()][p.getY()] = v;
+        _mapArray[p.getY()][p.getX()] = v;
 	}
 
     @Override
@@ -139,12 +139,9 @@ public class Map implements Map2D, Serializable{
     @Override
     public void addMap2D(Map2D p) {
         if (sameDimensions(p)){
-//            add all scales in p with this
-//            for example i have a 4X4 with values of 1 and a 4x4 values 2
-//            it sets the _mapArray to a 4x4 value of 3
             for (int i=0; i<_mapArray.length; i++){
                 for (int j=0; j<_mapArray[i].length; j++){
-                    _mapArray[i][j] = p.getPixel(i, j);
+                    _mapArray[i][j] = p.getPixel(j, i);
                 }
             }
         }
@@ -357,7 +354,7 @@ public class Map implements Map2D, Serializable{
                     }
 
                 }
-                if (nx >= 0 && ny >= 0 && ny < getWidth() && nx < getHeight() && !visited[ny][nx] &&
+                if (nx >= 0 && ny >= 0 && nx < getWidth() && ny < getHeight() && !visited[ny][nx] &&
                         _mapArray[ny][nx] != obsColor) {
                     visited[ny][nx] = true;
                     q.add(new Node(nx,ny,curr));
@@ -407,7 +404,6 @@ public class Map implements Map2D, Serializable{
                     }
                     if (ny < 0 || ny >= getHeight()) {
                         ny = Math.floorMod(ny,getWidth());
-
                     }
 
                 }
@@ -446,7 +442,7 @@ public class Map implements Map2D, Serializable{
     private static Pixel2D[] createPath(Node node){
         ArrayList<Pixel2D> ans = new ArrayList<>();
         while(node != null){
-            ans.add(new Index2D(node.y, node.x));
+            ans.add(new Index2D(node.x, node.y));
             node = node.parent;
         }
         Collections.reverse(ans);

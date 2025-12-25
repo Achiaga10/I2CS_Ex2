@@ -16,6 +16,7 @@ class MapTest {
     private int[][] _map_3_4 = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
     private Map2D _m0, _m1, _m3_3, _m4;
     private Map m = new Map(_map_3_3);
+    private Map _m2 = new Map(_map_3_3);
     @BeforeEach
     public void setup() {
         _m3_3 = new Map(_map_3_3);
@@ -67,28 +68,28 @@ class MapTest {
 
     @Test
     void testGetPixel() {
-        Index2D p1 = new Index2D(3,2);
+        Index2D p1 = new Index2D(2,1);
         Index2D p2 = new Index2D(p1);
         m.setPixel(p1, 1);
-        _m1.setPixel(p1, 1);
-        assertTrue (m.getPixel(p1) == _m1.getPixel(p1));
-        assertTrue (m.getPixel(p1.getX(),p1.getY()) == _m1.getPixel(p1));
+        _m2.setPixel(p1, 1);
+        assertTrue (m.getPixel(p1) == _m2.getPixel(p1));
+        assertTrue (m.getPixel(p1.getX(),p1.getY()) == _m2.getPixel(p1));
     }
 
     @Test
     void setPixel() {
-        Index2D p1 = new Index2D(3,2);
+        Index2D p1 = new Index2D(2,1);
         Index2D p2 = new Index2D(p1);
         m.setPixel(p1, 1);
-        _m1.setPixel(p2, 1);
-        assertTrue (m.getPixel(p1) == _m1.getPixel(p2));
+        _m2.setPixel(p1, 1);
+        assertTrue (m.getPixel(p1) == _m2.getPixel(p2));
     }
 
     @Test
     void testSetPixel() {
-        m.setPixel(3,2, 1);
-        _m1.setPixel(3,2, 1);
-        assertTrue (m.getPixel(3,2) == _m1.getPixel(3,2));
+        m.setPixel(2,1, 1);
+        _m2.setPixel(1,1, 1);
+        assertTrue (m.getPixel(2,1) == _m2.getPixel(2,1));
     }
 
     @Test
