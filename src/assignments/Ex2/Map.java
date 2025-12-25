@@ -10,7 +10,6 @@ import java.util.*;
  *
  */
 public class Map implements Map2D, Serializable{
-    private final int STUDENT_ID = 214679607;
 
     private int _w;
     private int _h;
@@ -120,7 +119,6 @@ public class Map implements Map2D, Serializable{
 	public void setPixel(Pixel2D p, int v) {
         _mapArray[p.getY()][p.getX()] = v;
 	}
-
     @Override
     public boolean isInside(Pixel2D p) {
         try{
