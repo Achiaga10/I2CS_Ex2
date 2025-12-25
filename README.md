@@ -29,7 +29,9 @@ This file is responsible for creating new Pixel.
 Each pixel holds an x,y position.
 
 ## Ex2_GUI
-
+### Description
+This file is responsible for creating demo running of the project, it will be able to Create a simple Maze, Display
+the shortest path between two points, and find all paths from single point.
 
 ## Usage
 
@@ -48,17 +50,18 @@ Map map = new Map(10,10,0);// creates new matrix 10X10 each cell holds 0. 0 repr
 //Create Shapes
 map.drawCircle(p, rad, newColor);
 
-int i = map.fill(p,newColor, true);// cyclic = true - Makes the board Circler so End of the matrix it connected to the start 
+int i = map.fill(p,newColor, true);// cyclic = true - Makes the board Circler so the end of the matrix is connected to the start.
 Pixel2D[] pArr = map.shortestPath(p, new Index2D(8,9), obsColor ,true)
 Map newM = map.allDistance(new Index2D(2,3), obsColor, true)
 
 ```
 ## Result
-As shown in figure 1, Create maze using 'M' key. By using 'S' key it will randomize 2 points
-on the map, and it will display it as shown in Figure 2.
-By using the 'A' key it will display all paths from a randomized point as shown in Figure 3.
+By running Ex2_GUI, you'll be able to perform the following actions:
+- Create maze using 'M' key as shown in figure 1. 
+- By using 'S' key it will randomize 2 points on the map, and it will display it as shown in Figure 2.
+- By using the 'A' key it will display all paths from a randomized point as shown in Figure 3.
 
-![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/alldisfalse.png)
+![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/genMaze.png)
 Figure 1
 
 ![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/shortMaze.png)
