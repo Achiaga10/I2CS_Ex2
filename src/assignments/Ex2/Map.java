@@ -10,6 +10,8 @@ import java.util.*;
  *
  */
 public class Map implements Map2D, Serializable{
+    private final int STUDENT_ID = 214679607;
+
     private int _w;
     private int _h;
     private int _v;
@@ -253,11 +255,15 @@ public class Map implements Map2D, Serializable{
         return true;
     }
 
+    /**
+     * Using BFS algorithm, Staring from xy, It goes over all possible directions where the Pixel color
+     * is the same as xy's color.
+     * @param xy the pixel to start from.
+     * @param new_v - the new "color" to be filled in p's connected component.
+     * @param cyclic
+     * @return number of filled pixels.
+     */
     @Override
-	/**
-	 * Fills this map with the new color (new_v) starting from p.
-	 * https://en.wikipedia.org/wiki/Flood_fill
-	 */
 	public int fill(Pixel2D xy, int new_v,  boolean cyclic) {
 		int ans = 1;
         int x = xy.getX();
@@ -307,11 +313,17 @@ public class Map implements Map2D, Serializable{
 		return ans;
 	}
 
+    /**
+     * Using BFS algorithm, Staring from p1, It goes over all possible paths,
+     * using a Queue of Nodes it saves each cell's index
+     * position ,x,y and parent. By Reaching p2 it will trace back the path and return its pixels.
+     * @param p1 first coordinate (start point).
+     * @param p2 second coordinate (end point).
+     * @param obsColor the color which is addressed as an obstacle.
+     * @param cyclic
+     * @return Pixels array containing the shortest path pixels
+     */
 	@Override
-	/**
-	 * BFS like shortest the computation based on iterative raster implementation of BFS, see:
-	 * https://en.wikipedia.org/wiki/Breadth-first_search
-	 */
 	public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
 		Pixel2D[] ans = null;  // the result.
 
@@ -355,6 +367,14 @@ public class Map implements Map2D, Serializable{
 		return ans;
 	}
 
+    /**
+     * Using BFS algorithm, It goes over all possible paths, using a Queue of Nodes it saves each cell's index
+     * position ,x,y and parent. by Reaching any end point it will trace back its path
+     * @param start the source (starting) point
+     * @param obsColor the color representing obstacles
+     * @param cyclic
+     * @return new Map2D containing all Distances from a certain point
+     */
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
         Map2D ans = null;// the result.
@@ -403,6 +423,9 @@ public class Map implements Map2D, Serializable{
     }
 	////////////////////// Private Methods ///////////////////////
 
+    /**
+     * Node for Queue, each Node holds: x,y,position and a parent.
+     */
     static class Node{
         int x, y, pos;
         Node parent;
@@ -415,6 +438,11 @@ public class Map implements Map2D, Serializable{
         }
     }
 
+    /**
+     * This function computes the path using Node's parent
+     * @param node
+     * @return Pixel array
+     */
     private static Pixel2D[] createPath(Node node){
         ArrayList<Pixel2D> ans = new ArrayList<>();
         while(node != null){

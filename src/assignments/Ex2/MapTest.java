@@ -220,11 +220,16 @@ class MapTest {
                 {3,0,4,4,4,4,4,4,4,4},
                 {3,0,4,4,4,4,4,4,4,4},
         };
-        fillM.fill(new Index2D(5,5), 4, false);
+        int res1 = fillM.fill(new Index2D(5,5), 4, false);
         assertArrayEquals(fillM.getMap(),resultFalse, "The 2D arrays are equal");
+        assertEquals(64, res1);
+
         fillM.fill(new Index2D(5,5), 3, false);
-        fillM.fill(new Index2D(5,5), 4, true);
+
+        int res2 = fillM.fill(new Index2D(5,5), 4, true);
         assertArrayEquals(fillM.getMap(),resultTrue, "The 2D arrays are equal");
+        assertEquals(72, res2);
+
 
     }
 
