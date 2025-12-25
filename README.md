@@ -58,13 +58,13 @@ As shown in figure 1, Create maze using 'M' key. By using 'S' key it will random
 on the map, and it will display it as shown in Figure 2.
 By using the 'A' key it will display all paths from a randomized point as shown in Figure 3.
 
-![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/genMaze.png
+![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/alldisfalse.png)
 Figure 1
 
-![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/shortMaze.png
+![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/shortMaze.png)
 Figure 2
 
-![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/alldisfalse.png
+![alt text](https://github.com/Achiaga10/I2CS_Ex2/blob/main/src/images/alldisfalse.png)
 Figure 3
 
 
