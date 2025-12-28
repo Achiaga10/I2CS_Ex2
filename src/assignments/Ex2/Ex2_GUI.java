@@ -42,7 +42,7 @@ public class Ex2_GUI {
         StdDraw.text(w / 2.1, 0.5, label); // top label
 
         // Second label (cyclic)
-        StdDraw.text(w / 2.0, 1.5, "Cyclic: " + cyclic + " | Press C to toggle");
+        StdDraw.text(w / 2.0, 1.5, "Press Q: Save map| L: load map| Cyclic: " + cyclic + " - Press C to toggle");
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
@@ -174,6 +174,31 @@ public class Ex2_GUI {
                 drawMap(map, TOP_LABEL);
 
                 while (StdDraw.isKeyPressed(KeyEvent.VK_C)) {
+                    StdDraw.pause(20);
+                }
+            }
+            else if (StdDraw.isKeyPressed(KeyEvent.VK_L)) {
+                cyclic = !cyclic; // toggle
+                try{
+                    map = loadMap("mapfile.txt");
+                    drawMap(map , TOP_LABEL);
+                }catch(Exception e){
+                    System.out.println("An error occurred while loading the map: " + e.getMessage());
+                }
+
+                while (StdDraw.isKeyPressed(KeyEvent.VK_L)) {
+                    StdDraw.pause(20);
+                }
+            }
+            else if (StdDraw.isKeyPressed(KeyEvent.VK_Q)) {
+                cyclic = !cyclic; // toggle
+                try{
+                    saveMap(map,"mapfile.txt");
+                }catch(Exception e){
+                    System.out.println("An error occurred while Saving the map: " + e.getMessage());
+                }
+
+                while (StdDraw.isKeyPressed(KeyEvent.VK_Q)) {
                     StdDraw.pause(20);
                 }
             }
