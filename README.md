@@ -16,7 +16,7 @@ and finds the shortest Path from p1 to p2.
 
 ## Map.java
 ### Description
-This file is responsible for creating new Map objet
+This file is responsible for creating new Map object
 ### Main functions 
 
 - _fill(Pixel2D xy, int new_v, boolean cyclic)_ - Fill all connected Pixels with xy with same color as xy, Returns Number of filled Pixels.
@@ -32,7 +32,9 @@ Each pixel holds an x,y position.
 ### Description
 This file is responsible for creating demo running of the project, it will be able to Create a simple Maze, Display
 the shortest path between two points, and find all paths from single point.
-
+#### Additional functions:
+- _saveMap(Map2D map, String mapFileName)_ - Saves map as a txt file
+- _loadMap(String mapFileName)_ - loads txt file and creates a new Map2D object
 ## Usage
 
 ```java

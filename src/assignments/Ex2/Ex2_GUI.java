@@ -28,6 +28,11 @@ public class Ex2_GUI {
     public static boolean cyclic = false;
     public static int size = 20;
 
+    /**
+     * This func draws a Map using StdDraw module.
+     * @param map
+     * @param label
+     */
     public static void drawMap(Map2D map, String label) {
         int w = map.getWidth();
         int h = map.getHeight();
@@ -62,7 +67,7 @@ public class Ex2_GUI {
 
 
     /**
-     * Load a .txt file
+     * Load a .txt file, Containing a matrix.
      * @param mapFileName
      * @return new Map with the loaded matrix.
      */
@@ -232,7 +237,10 @@ public class Ex2_GUI {
 
     }
 
-
+    /**
+     * Randomize Block pixels and adds them to the map
+     * @param m
+     */
     private static void mazeGenerator(Map2D m) {
         int size = m.getHeight();
         int couplesCount = size / 2;
@@ -262,6 +270,11 @@ public class Ex2_GUI {
         }
     }
 
+    /**
+     * Finds a valid Random pixel on the map
+     * @param mat
+     * @return Pixel2D - A valid pixel on the map.
+     */
     public static Pixel2D randomValidPixel(int[][] mat) {
         int h = mat.length;
         int w = mat[0].length;
@@ -277,6 +290,11 @@ public class Ex2_GUI {
         }
     }
 
+    /**
+     * Generates color
+     * @param v
+     * @return Color
+     */
     private static Color colorForValue(int v) {
         if (v == -1) return Color.BLACK;
         else if (v == 0) return Color.GRAY;
